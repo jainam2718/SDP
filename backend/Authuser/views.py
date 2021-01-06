@@ -52,17 +52,17 @@ def customer_registration_view(request):
 
 @api_view(['POST', ])
 def vendor_registration_view(request):
+
     serializer = UserSerializer(data=request.data)
     serializer1 = VendorSerializer(data=request.data)
+
     if User.objects.filter(email=request.data['email']).exists():
         raise serializers.ValidationError({'error': 'User already Exist'})
     data = {}
     if serializer.is_valid():
         if serializer1.is_valid():
             user = serializer.save()
-            vendor = serializer1.save()
-            vendor.user = user
-            vendor.save()
+            vendor = serializer1.save(user=user)
             data['response'] = "Succesfully registered Vendor"
             data['shop_name'] = vendor.shop_name
             data['username'] = user.username
@@ -75,6 +75,25 @@ def vendor_registration_view(request):
     else:
         data = serializer.errors
     return Response(data)
+
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated,))
+def vendor_update_view(request):
+    print(request.user.is_vendor)
+    if not request.user.is_vendor:
+        return Response({'message': 'User is not a Vendor'}, status=HTTP_400_BAD_REQUEST)
+    try:
+        vendor = Vendors.objects.get(user=request.user)
+    except Snippet.DoesNotExist:
+        return HttpResponse(status=404)
+
+    serializer = VendorSerializer(vendor, data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, HTTP_400_BAD_REQUEST)
 
 
 @api_view(["POST"])
@@ -105,8 +124,8 @@ def signin_view(request):
 
 @api_view(["GET", "POST"])
 def testing(request):
-    print(request.user)
-    return Response()
+    print(request)
+    return Response(request.user)
 
 
 @api_view(["GET"])
