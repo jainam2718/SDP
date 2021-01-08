@@ -1,5 +1,9 @@
 # Django
-from django.shortcuts import render
+from django.core.mail import send_mail
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.urls import reverse
+from django.dispatch import receiver
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate
 
 # Rest Framework
@@ -17,7 +21,7 @@ from rest_framework.status import (
 )
 
 # Custom
-from Authuser.serializers import UserSerializer, VendorSerializer, AddressSerializer
+from Authuser.serializers import UserSerializer, VendorSerializer, AddressSerializer, ChangePasswordSerializer
 from Authuser.models import Vendors, Customers, User, Address
 from Authuser.permissions import IsOwner
 from Authuser.authentication import expires_in, is_token_expired, token_expire_handler, ExpiringTokenAuthentication
@@ -152,3 +156,55 @@ class AddressViewSet(viewsets.ModelViewSet):
         # after get all products on DB it will be filtered by its owner and return the queryset
         owner_queryset = self.queryset.filter(user=self.request.user)
         return owner_queryset
+
+
+class ChangePasswordView(generics.UpdateAPIView):
+    """
+    An endpoint for changing password.
+    """
+    serializer_class = ChangePasswordSerializer
+    model = User
+    permission_classes = (IsAuthenticated,)
+
+    def get_object(self, queryset=None):
+        obj = self.request.user
+        return obj
+
+    def update(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+
+        if serializer.is_valid():
+            # Check old password
+            if not self.object.check_password(serializer.data.get("old_password")):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+            self.object.set_password(serializer.data.get("new_password"))
+            self.object.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+            return Response(response)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "{}?token={}".format(
+        reverse('password_reset:reset-password-request'), reset_password_token.key)
+
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="Some website title"),
+        # message:
+        email_plaintext_message,
+        # from:
+        "noreply@somehost.local",
+        # to:
+        [reset_password_token.user.email]
+    )

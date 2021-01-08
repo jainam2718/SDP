@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from Authuser.models import Customers, Vendors, User, Address
 
@@ -84,3 +85,10 @@ class AddressSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         print(validated_data)
         return Address.objects.create(**validated_data)
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
