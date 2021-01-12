@@ -55,7 +55,6 @@ class VendorSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Vendors.objects.create(**validated_data)
 
-    # Testing Pending
     def update(self, instance, validated_data):
         instance.shop_name = validated_data.get(
             'shop_name', instance.shop_name)
