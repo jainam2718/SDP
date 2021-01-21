@@ -20,10 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'tt$&n%_^cp*u=78uxs!y@m8dre5*-!&leorw+9uk%gdybs_q=_'
+SECRET_KEY = 'ox-neamr#f1*!83*&aawa5n@m%r7!vc=(k-n(gq)^4fiep)6)z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+ALLOWED_HOSTS = []
+
 
 ALLOWED_HOSTS = ['*']
 CORS_ORIGIN_ALLOW_ALL = True
@@ -42,7 +45,7 @@ INSTALLED_APPS = [
 
     # Django App
     'Authuser',
-    'Membership',
+    'Memberships',
     'ManageShops',
     'ManageOrders',
 
@@ -85,7 +88,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
-
 
 TEMPLATES = [
     {

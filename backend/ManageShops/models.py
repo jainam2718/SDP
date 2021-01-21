@@ -3,8 +3,7 @@ from Authuser.models import Vendors
 
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT / user_<id>/<filename>
-    return 'img/user_{0}/{1}'.format(instance.user.id, filename)
+    return 'img/product_{0}/{1}'.format(instance.product.id, filename)
 
 # Create your models here.
 
@@ -14,6 +13,7 @@ class Products(models.Model):
     catagory = models.CharField(max_length=10)
     vendor = models.ForeignKey(Vendors, on_delete=models.CASCADE)
     amount = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField()
     discount = models.PositiveIntegerField()
     details = models.CharField(max_length=100)
 

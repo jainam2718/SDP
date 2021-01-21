@@ -21,4 +21,5 @@ import epicbox
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/Authuser/', include('Authuser.urls')),
+    path('api/ManageShops/', include('ManageShops.urls')),
 ]
