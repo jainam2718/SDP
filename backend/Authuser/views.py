@@ -33,7 +33,9 @@ def customer_registration_view(request):
     if request.data['is_vendor'] == "True":
         raise serializers.ValidationError(
             {'error': 'Customer cannot be Vendor'})
-    serializer = UserSerializer(data=request.data)
+    d = request.data
+    d['is_vendor'] = False
+    serializer = UserSerializer(data=d)
     if User.objects.filter(email=request.data['email']).exists():
         raise serializers.ValidationError({'user': 'User already Exist'})
     data = {}

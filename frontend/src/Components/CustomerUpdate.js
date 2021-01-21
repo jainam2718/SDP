@@ -6,12 +6,15 @@ import {  Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faSpinner} from '@fortawesome/free-solid-svg-icons'
+import {loadUser} from '../actions/auth'
+
 
 export class CustomerUpdate extends Component {
     state = {
         first_name: '',
         last_name: '',
         phone: '',
+        flag : true,
     };
 
     static propTypes = {
@@ -20,6 +23,25 @@ export class CustomerUpdate extends Component {
         isUpdated : PropTypes.bool,
     };
     
+    constructor(props){
+        super(props);
+        this.props.loadUser();     
+    }
+
+    UpdateState(){
+        this.setState(this.props.auth.user);
+    }
+
+    componentDidUpdate(){
+        if(this.state.flag)
+        {
+            //console.log(this.props.vendor);
+            this.setState({flag: false});
+            this.UpdateState();
+        }
+    }
+
+
     onSubmit = (e) => {
         e.preventDefault();
         this.props.updateCustomer(this.state);
@@ -30,7 +52,8 @@ export class CustomerUpdate extends Component {
     };
 
     render() {
-        if (!this.props.auth.isAuthenticated) {
+        
+        if (!this.props.auth ||  !this.props.auth.isAuthenticated) {
             return <Redirect to="/" />;
         }
         if(this.props.isUpdated){
@@ -97,4 +120,4 @@ const mapStateToProps = (state) => ({
     isUpdated:state.vendor.isUpdated,
   });
   
-  export default connect(mapStateToProps, { updateCustomer})(CustomerUpdate);
+  export default connect(mapStateToProps, { updateCustomer,loadUser})(CustomerUpdate);

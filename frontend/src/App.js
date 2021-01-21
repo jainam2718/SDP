@@ -15,7 +15,9 @@ import Home from './Components/Home'
 import { Provider } from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/auth';
-import  VendorProfile  from './Components/VendorProfile';
+import  VendorProfile from './Components/VendorProfile';
+import  CustomerUpdate  from './Components/CustomerUpdate';
+import  CustomerProfile  from './Components/CustomerProfile';
 
 
 // Alert Options
@@ -45,6 +47,8 @@ export default class App extends Component {
                                     <Route path="/register/vendor" component={VendorRegister} />
                                     <Route exact path="/update/vendor" component={VendorUpdate} />
                                     <Route exact path="/profile/vendor" component={VendorProfile} />
+                                    <Route exact path="/update/customer" component={CustomerUpdate} />
+                                    <Route exact path="/profile/customer" component={CustomerProfile} />
                                     
                                 </Switch>
                             </div>

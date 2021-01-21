@@ -14,7 +14,6 @@ export class Header extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
-
     const authLinks = (
       <ul className="navbar-nav ml-auto mt-2 mt-lg-0">
         <span className="navbar-text mr-3">
@@ -25,20 +24,28 @@ export class Header extends Component {
             Logout
           </button>
         </li>
-        
         <li class="dropdown">
             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false"> 
               <FontAwesomeIcon icon={faUser}/>   <b class="caret"></b>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <Link to="/update/vendor" className="nav-link">
-                  Update Profile
-                </Link>
+                {this.props.auth.is_vendor ? <Link to="/update/vendor" className="nav-link">
+                  Update Profile Vendor
+                </Link> : <Link to="/update/customer" className="nav-link">
+                  Update Profile Customer
+                </Link> 
+                }
+                {this.props.auth.is_vendor ? <Link to="/profile/vendor" className="nav-link">
+                  Profile Vendor
+                </Link> : <Link to="/profile/customer" className="nav-link">
+                  Profile Customer
+                </Link> 
+                }
                 <a class="dropdown-item" href="#">Another action</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#">Something else here</a>
             </div>
-        </li>
+        </li> 
       </ul>
     );
 
