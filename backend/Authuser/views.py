@@ -21,7 +21,7 @@ from rest_framework.status import (
 )
 
 # Custom
-from Authuser.serializers import UserSerializer, VendorSerializer, UserUpdateSerializer, AddressSerializer, ChangePasswordSerializer
+from Authuser.serializers import UserSerializer, VendorSerializer, UserUpdateSerializer, AddressSerializer, ChangePasswordSerializer, AddressViewSerializer
 from Authuser.models import Vendors, Customers, User, Address
 from Authuser.permissions import IsOwner
 from Authuser.authentication import expires_in, is_token_expired, token_expire_handler, ExpiringTokenAuthentication
@@ -47,9 +47,7 @@ def customer_registration_view(request):
         )
         customer.save()
         data['response'] = "Succesfully registered Customer"
-        data['username'] = user.username
-        data['email'] = user.email
-        data['first_name'] = user.first_name
+        data['user'] = serializer.data
         token = Token.objects.get(user=user).key
         data['token'] = token
     else:
@@ -66,16 +64,19 @@ def vendor_registration_view(request):
     if User.objects.filter(email=request.data['email']).exists():
         raise serializers.ValidationError({'error': 'User already Exist'})
     data = {}
+    print(serializer.is_valid())
+    print(serializer.data)
     if serializer.is_valid():
         if serializer1.is_valid():
             user = serializer.save()
             vendor = serializer1.save(user=user)
             data['response'] = "Succesfully registered Vendor"
-            data['user'] = serializer1.data
+            data['user'] = serializer.data
             token = Token.objects.get(user=user).key
             data['token'] = token
 
         else:
+            print(serializer1.errors)
             return Response(serializer1.errors, HTTP_400_BAD_REQUEST)
     else:
         return Response(serializer.errors, HTTP_400_BAD_REQUEST)
@@ -155,6 +156,13 @@ class AddressViewSet(viewsets.ModelViewSet):
     # get all products on DB
     queryset = Address.objects.all()
     permission_classes = (IsAuthenticated, )
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return AddressViewSerializer
+        if self.action == 'retrieve':
+            return AddressViewSerializer
+        return AddressSerializer
 
     def perform_create(self, serializer):
         # when a product is saved, its saved how it is the owner
@@ -241,6 +249,7 @@ def get_vendor(request):
 @permission_classes((IsAuthenticated,))
 def customer_update_view(request):
     data = {}
+    print(request.data)
     if request.user.is_vendor:
         return Response({'message': 'User is a Vendor'}, status=HTTP_400_BAD_REQUEST)
     try:
@@ -248,6 +257,7 @@ def customer_update_view(request):
     except Users.DoesNotExist:
         return HttpResponse(status=404)
     serializer = UserUpdateSerializer(user, data=request.data)
+
     if serializer.is_valid():
         serializer.save()
         data['response'] = "Succesfully updated Customer"
@@ -255,5 +265,12 @@ def customer_update_view(request):
         token = Token.objects.get(user=user).key
         data['token'] = token
     else:
+        print(serializer.errors)
         return Response(serializer.errors, HTTP_400_BAD_REQUEST)
     return Response(data)
+
+
+class get_all_vendors(generics.ListCreateAPIView):
+    queryset = Vendors.objects.all()
+    serializer_class = VendorSerializer
+    permission_classes = [IsAuthenticated]

@@ -1,0 +1,73 @@
+Value Proposition
+
+that means what benifits custoemrs can get from this idea of AI
+
+-> AI is still in its beginning stage. This large gap of time results into the challanges that it has not grown to its full potentials, But it is estimated that by 2025, it will range bewtween 36 billion US Dollars & 200 billion US Dollars.
+
+-> AI has affected many sectors such as healthcare, education, agriculture, security, poverty, and resource management.However, there is lack of knowledge of AI in people & lack off skilled workforce : this will result into  damaging the human dignity & other security threats that will stop the market growth from increasing. 
+
+-> In coming future considering enormos value proposition, it will f=grow upto its full potential.
+
+-> Sectors in which AI has entered into..... has shown better growth such as from customer servicing and marketing to manufacturing and regulatory compliance. That means AI can touch every possible aspect which could add value to the system.
+
+-> In the coming future, AI will ride on billions of dollars of investment due to the skilled workforce in the industry & It is Possible that, AI will enter in every possible field.
+
+
+
+Market survey:-
+
+"The global AI in manufacturing market size stood at USD 1.82 Billion in 2019 and is
+projected to reach USD 9.89 Billion by 2027, exhibiting a CAGR (compound annual growth rate)of 24.2% during the
+forecast period. "
+
+Besides, with rising adoption of industry 4.0 by manufacturers, the demand for AI is increasing for optimizing the factories.
+System capablities of fault prediction and fault tollrence will attract many manufacturing industries for customizations.
+As we can see in the chart
+The market is likely to show exponential growth during the forecast
+period. Rising demand from manufacturing industries such as automotive,
+semiconductors, and medical devices, among others AI will contribute significantly towards
+the growth of the market. 
+now i'm handing next topic to sanjana purohit.
+
+Current stage
+
+•	In manufacturing industries, maintenance of products and machines are very costly and also complex to handle. Recent, studies show that unplanned downtime costs manufacturers an estimated $50 billion annually, and that asset failure is the cause of 42 percent of this unplanned downtime.
+•	With use of AI Predictive maintenance systems we can predict the faults in products and also maintain the equipment.
+•	If we talk about current stage of our system … we have researched about all the technologies and required hardware equipment’s. we also discuss some solutions and where we can use system like this
+
+Next Stage
+
+•	As the technology grows and also AI is quiet good with natural language detecting we can make it more useful and try to achieve the max efficiency where system act and synchronize with humans also
+•	 Create rapid, data determined decisions
+•	    Facilitate enhanced production outcomes
+•	    Advance process effectiveness
+•	    Minimize operational costs
+•	    Facilitate superior scalability
+•	    Facilitate product development
+•	As AI takes over the manufacturing plant and automates boring and ordinary human tasks, workers will get to focus on complex and innovative tasks. While AI takes care of unskilled labor, humans can focus on driving innovation and routing their business to advanced levels.
+
+
+Description
+AI has managed to enter every sector.AI has already taken automation of industries to a greater level.
+So to reach new height our main objectives include fault tolerance,improving product quality and insights for 
+resource management.For eg Defects in products is difficult to notice through naked eye but with the help of HD camers
+and sensors we can even detect smallest defects.Robotics and AI will help us solve this problem.
+Also many fears the one where frightenning but with our system introduced into the industry, the workforce 
+can focus on innovation and new operation.
+
+
+Proposed solution
+
+Maufacturing industry is keen on its products and processes to be accurate,precise,with improved quality and low maintence
+Moving forward to solutions one by one :
+1) Predicting maintainence issues : Maintenance is one of the most crucial parts of manufacturing industry
+   According to a survey in UK alone 3% of all working days are lost annually due to defective machines and the cot of 
+upto 180 billion pounds.We can solve this using advanced analytics and sensors which will tell which machines need 
+maintenance to prevent downtime.Also give sufficient time to prepare for alternatives.FOr eg Intermidiary production can be delayed with the insights.
+ 2) Increasing overall production quality
+	Potential faults can be detected and algorithms can notify teams about the same and help companys save xost and
+	brand name.
+3)	Improving products with computer vision:
+	As explained earlier smallest defects can be handled and noticed with our system
+4)	Adapting to market changes
+	Estimating the market changes the system will notify the production team with some insights.

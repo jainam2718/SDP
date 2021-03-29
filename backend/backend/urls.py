@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-import epicbox
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/Authuser/', include('Authuser.urls')),
     path('api/ManageShops/', include('ManageShops.urls')),
-]
+    path('api/ManageReviews/', include('ManageReviews.urls')),
+    path('api/ManageOrders/', include('ManageOrders.urls')),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

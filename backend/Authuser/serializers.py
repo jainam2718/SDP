@@ -52,7 +52,7 @@ class VendorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vendors
-        fields = ['user', 'shop_name', 'address',
+        fields = ['id', 'user', 'shop_name', 'address',
                   'location_long', 'location_lat', 'pincode', 'cod_available', 'is_active']
 
     def create(self, validated_data):
@@ -102,17 +102,9 @@ class UserUpdateSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'phone',  'first_name', 'last_name']
 
-    # Pending API reserved to be extended
 
-    def update(self, instance, validated_data):
-        instance.email = instance.email
-        instance.username = instance.username
-        instance.first_name = validated_data.get(
-            'first_name', instance.first_name)
-        instance.last_name = validated_data.get(
-            'last_name', instance.last_name)
-        instance.is_vendor = True
-        instance.phone = validated_data.get('phone', instance.phone)
-        instance.password = instance.password
-        instance.save()
-        return instance
+class AddressViewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Address
+        fields = ['id', 'address', 'address_title', 'pincode']

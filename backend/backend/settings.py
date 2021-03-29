@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'Memberships',
     'ManageShops',
     'ManageOrders',
+    'ManageReviews',
 
     # REST_FRAMEWORK
     'rest_framework',
@@ -56,6 +57,7 @@ INSTALLED_APPS = [
 
     # External Libraries
     'corsheaders',
+    'django_cleanup',
 ]
 
 TOKEN_EXPIRED_AFTER_SECONDS = 86400
@@ -86,6 +88,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -156,5 +161,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'backend')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
