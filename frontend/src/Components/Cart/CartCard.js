@@ -1,16 +1,17 @@
-import {Component} from 'react';
-import {connect} from 'react-redux';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { Component } from "react";
+import { connect } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faTrash,
     faRupeeSign,
     faPlusCircle,
     faMinusCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
-import 'bootstrap/dist/css/bootstrap.css';
-import '../../style/Cart.css';
-import {deleteCartItem, modifyItemQuantity} from '../../actions/cart';
+} from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types";
+import "bootstrap/dist/css/bootstrap.css";
+import "../../style/Cart.css";
+import { deleteCartItem, modifyItemQuantity } from "../../actions/cart";
+import { returnErrors } from "../../actions/messages";
 
 class CartCard extends Component {
     static propTypes = {
@@ -29,15 +30,24 @@ class CartCard extends Component {
     componentDidUpdate() {
         if (this.state.flag) {
             //console.log(this.props.vendor);
-            this.setState({flag: false});
+            this.setState({ flag: false });
             this.UpdateState();
         }
     }
 
     async modify(q) {
         if (q && q > 0) {
-            await this.setState({quantity: q});
-            this.props.modifyItemQuantity(this.props.element.id, q);
+            await this.setState({ quantity: q });
+            this.props.modifyItemQuantity(
+                this.props.element.id,
+                q,
+                this.props.element.product.id
+            );
+            if (q > this.props.element.product.quantity)
+                this.setState({ quantity: this.props.element.quantity });
+        } else {
+            if (window.confirm("Are you sure you wish to delete this item?"))
+                this.itemDelete();
         }
     }
 
@@ -50,18 +60,17 @@ class CartCard extends Component {
     };
 
     onChange = (e) => {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({ [e.target.name]: e.target.value });
     };
 
     onBlur = (e) => {
         this.modify(e.target.value);
     };
     itemDelete = (e) => {
-        console.log('Deleting');
         this.props.deleteCartItem(this.props.element.id);
     };
     render() {
-        const {quantity} = this.state;
+        const { quantity } = this.state;
         return (
             <div className="row mb-4">
                 <div className="col-3">
@@ -142,6 +151,6 @@ class CartCard extends Component {
 
 const mapStateToProps = (state) => ({});
 
-export default connect(mapStateToProps, {deleteCartItem, modifyItemQuantity})(
+export default connect(mapStateToProps, { deleteCartItem, modifyItemQuantity })(
     CartCard
 );

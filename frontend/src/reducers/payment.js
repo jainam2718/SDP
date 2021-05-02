@@ -1,6 +1,6 @@
-import {PAYMENT_SUCCESS} from '../actions/types';
+import { PAYMENT_IN_PROCESS, PAYMENT_SUCCESS } from "../actions/types";
 
-const initialState = {success: false};
+const initialState = { success: false, inProcess: false };
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -9,7 +9,12 @@ export default function (state = initialState, action) {
                 ...state,
                 success: true,
             };
+        case PAYMENT_IN_PROCESS:
+            return {
+                ...state,
+                inProcess: true,
+            };
         default:
-            return {...state, success: false};
+            return { ...state, success: false };
     }
 }

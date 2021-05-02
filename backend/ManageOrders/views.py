@@ -33,6 +33,24 @@ class CartDetails(viewsets.ModelViewSet):
     serializer_class = CartDetailsSerializer
     permission_classes = [IsAuthenticated, IsCartOwner]
 
+    def update(self, request, *args, **kwargs):
+        product = Products.objects.get(pk=self.request.data.get('pid'))
+        cart = CartDetailsSerializer(
+            CartDetailsModel.objects.get(pk=kwargs['pk']), data=request.data)
+
+        if cart.is_valid() and int(request.data['quantity']) <= product.quantity:
+            cart.save()
+            c = CartDetailsViewSerializer(
+                self.queryset.filter(
+                    customer=self.request.user.customers, placed=False), many=True)
+            print(c.data)
+            return Response(c.data, status=HTTP_200_OK)
+        else:
+            return Response({'msg': 'More quantity is not available', 'cart': CartDetailsViewSerializer(
+                self.queryset.filter(
+                    customer=self.request.user.customers, placed=False), many=True).data}, status=HTTP_400_BAD_REQUEST)
+        return Response()
+
     def get_serializer_class(self):
         if self.action == 'list':
             return CartDetailsViewSerializer
@@ -43,6 +61,7 @@ class CartDetails(viewsets.ModelViewSet):
     def get_queryset(self):
         owner_queryset = self.queryset.filter(
             customer=self.request.user.customers, placed=False)
+        print(owner_queryset)
         return owner_queryset
 
     def perform_create(self, serializer):
@@ -62,8 +81,8 @@ class Orders(viewsets.ModelViewSet):
         return owner_queryset
 
 
-@api_view(['POST', ])
-@permission_classes((IsAuthenticated,))
+@ api_view(['POST', ])
+@ permission_classes((IsAuthenticated,))
 def charge(request):
     stripe.api_key = "sk_test_51IMTY6BVij55aMSV1elLIs8JXvLXucb6FsLGEbZGIRQw4xMqYBSrrkwWqAMr5JoQn4JyMrSoSL90QAjvw1kT5ldi00b4RTm6vi"
     try:
@@ -79,7 +98,7 @@ def charge(request):
         # address = Address.objects.get(pk=request.data['address_id'])
         products = []
         for cart in carts:
-            amount += cart.product.amount
+            amount += (cart.product.amount*cart.product.quantity)
             products.append(cart.product.id)
         print(amount)
         charge = stripe.Charge.create(

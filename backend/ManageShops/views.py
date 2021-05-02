@@ -97,9 +97,11 @@ class ProductImage(views.APIView):
 
     def post(self, request, *args, **kwargs):
         product = ProductModel.objects.get(pk=self.request.data.get('pid'))
+        print(product)
         for image in self.request.FILES.getlist('images'):
             product_image = ProductImageSerializer(
                 data={'product': product.id, 'image': image})
+
             if(product_image.is_valid()):
                 product_image.save()
             else:

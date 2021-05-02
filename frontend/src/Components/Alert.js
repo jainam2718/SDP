@@ -1,7 +1,7 @@
-import React, {Component, Fragment} from 'react';
-import {withAlert} from 'react-alert';
-import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component, Fragment } from "react";
+import { withAlert } from "react-alert";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
@@ -14,10 +14,10 @@ export class Alerts extends Component {
     };
 
     async componentDidUpdate(prevProps) {
-        const {error, alert, message} = this.props;
-        console.log(error);
+        const { error, alert, message } = this.props;
+
+        console.log(message);
         if (error !== prevProps.error) {
-            console.log(error.msg);
             if (error.msg.email) {
                 alert.error(`Email: ${error.msg.email.join()}`);
                 await sleep(200);
@@ -44,6 +44,10 @@ export class Alerts extends Component {
             }
             if (error.msg.non_field_errors) {
                 alert.error(error.msg.non_field_errors.join());
+                await sleep(200);
+            }
+            if (error.msg.msg) {
+                alert.error(`Access Error : ${error.msg.msg}`);
                 await sleep(200);
             }
 

@@ -9,7 +9,7 @@ import {
     CART_ITEM_MODIFIED,
     CART_ITEM_MODIFY_FAIL,
     LOGIN_FAIL,
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
     isItemAdded: false,
@@ -52,7 +52,6 @@ export default function (state = initialState, action) {
             };
         case CART_LOAD_FAIL:
         case CART_ITEM_DELETION_FAIL:
-        case CART_ITEM_MODIFY_FAIL:
             return {
                 ...state,
                 cartItems: [],
@@ -75,21 +74,19 @@ export default function (state = initialState, action) {
             };
 
         case CART_ITEM_MODIFIED:
-            var obj = action.payload;
             var total = 0;
-            state.cartItems.map((item) => {
-                if (item.id != obj.id)
-                    total += item.quantity * item.product.amount;
-                else {
-                    item.quantity = obj.quantity;
-                    total += obj.quantity * item.product.amount;
-                }
+            action.payload.map((item) => {
+                total += item.quantity * item.product.amount;
             });
             state.totalAmt = total;
             return {
                 ...state,
                 totalAmt: total,
-                cartItems: state.cartItems,
+                cartItems: action.payload,
+            };
+        case CART_ITEM_MODIFY_FAIL:
+            return {
+                ...state,
             };
         default:
             return state;

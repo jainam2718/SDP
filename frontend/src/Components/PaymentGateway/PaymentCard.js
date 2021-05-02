@@ -1,26 +1,24 @@
-import React, {Component} from 'react';
-import {CardElement} from '@stripe/react-stripe-js';
-import CardSection from './CardSection';
-import '../../style/CardSection.css';
-import {connect} from 'react-redux';
-import {loadUser} from '../../actions/auth';
-import {pay} from '../../actions/payment';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { CardElement } from "@stripe/react-stripe-js";
+import CardSection from "./CardSection";
+import "../../style/CardSection.css";
+import { connect } from "react-redux";
+import { loadUser } from "../../actions/auth";
+import { pay } from "../../actions/payment";
+import PropTypes from "prop-types";
 
 export class PaymentCard extends Component {
     state = {
-        email: '',
-        id: '',
-        stripeToken: '',
+        email: "",
+        id: "",
+        stripeToken: "",
     };
     static propTypes = {
-        success: PropTypes.bool,
+        payment: PropTypes.object.isRequired,
     };
     handleSubmit = async (e) => {
         e.preventDefault();
-        const {stripe, elements} = this.props;
-        console.log('Payement card');
-        console.log(this.props);
+        const { stripe, elements } = this.props;
         let id = this.props.id;
         if (!stripe || !elements) {
             return;
@@ -30,21 +28,13 @@ export class PaymentCard extends Component {
         if (result.error) {
             console.log(result.error.message);
         } else {
-            this.setState({email: this.props.auth.user.email});
-            this.setState({stripeToken: result.token.id});
-            this.setState({id: id});
+            this.setState({ email: this.props.auth.user.email });
+            this.setState({ stripeToken: result.token.id });
+            this.setState({ id: id });
             this.props.pay(this.state);
         }
     };
     render() {
-        console.log(this.props);
-        if (this.props.success) {
-            return (
-                <center>
-                    <h1>SUCCESS</h1>
-                </center>
-            );
-        }
         return (
             <div className="cardcontainer">
                 <form onSubmit={this.handleSubmit}>
@@ -62,6 +52,6 @@ export class PaymentCard extends Component {
     }
 }
 
-const mapStateToProps = (state) => ({success: state.payment.success});
+const mapStateToProps = (state) => ({ payment: state.payment });
 
-export default connect(mapStateToProps, {pay})(PaymentCard);
+export default connect(mapStateToProps, { pay })(PaymentCard);
