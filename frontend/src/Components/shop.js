@@ -1,15 +1,19 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
-import store from '../store';
-import 'bootstrap/dist/css/bootstrap.css';
-import ShopCard from './shopCard';
-import '../style/home.css';
-import {getAllShopList} from '../actions/shopList';
-import {getCartItems} from '../actions/cart';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import store from "../store";
+import "bootstrap/dist/css/bootstrap.css";
+import ShopCard from "./shopCard";
+import "../style/home.css";
+import { getAllShopList } from "../actions/shopList";
+import { getCartItems } from "../actions/cart";
+import shopList from "../reducers/shopList";
 
 export class shop extends Component {
+    state = {
+        search: "",
+    };
     static propTypes = {
         auth: PropTypes.object,
         shopList: PropTypes.object,
@@ -21,7 +25,8 @@ export class shop extends Component {
     }
     render() {
         const shopList = this.props.shopList;
-        const {user} = this.props.auth;
+        const { user } = this.props.auth;
+        const { search } = this.state;
         console.log(shopList);
         if (!user) {
             return <div></div>;
@@ -36,8 +41,25 @@ export class shop extends Component {
         if (this.props.isShopListLoaded && user != null) {
             return (
                 <div>
-                    <div style={{marginTop: '20px'}}>
-                        <div className="row" style={{marginTop: '20px'}}>
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input
+                                type="search"
+                                name="search"
+                                class="form-control"
+                                value={search}
+                                onChange={this.onChange}
+                            />
+                            <label class="form-label" for="form1">
+                                Search
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div style={{ marginTop: "20px" }}>
+                        <div className="row" style={{ marginTop: "20px" }}>
                             {shopList
                                 ? shopList.map((element) => {
                                       // console.log(element)
@@ -51,7 +73,7 @@ export class shop extends Component {
                                           </div>
                                       );
                                   })
-                                : 'No Shops'}
+                                : "No Shops"}
                         </div>
                     </div>
                 </div>
@@ -66,4 +88,4 @@ const mapStateToProps = (state) => ({
     shopList: state.shopList.shopList,
     isShopListLoaded: state.shopList.isShopListLoaded,
 });
-export default connect(mapStateToProps, {getAllShopList})(shop);
+export default connect(mapStateToProps, { getAllShopList })(shop);

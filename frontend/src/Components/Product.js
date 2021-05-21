@@ -1,24 +1,24 @@
-import React, {Component, useEffect} from 'react';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import product from '../reducers/product';
-import {Link, Redirect, useParams} from 'react-router-dom';
-import store from '../store';
+import React, { Component, useEffect } from "react";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import product from "../reducers/product";
+import { Link, Redirect, useParams } from "react-router-dom";
+import store from "../store";
 import {
     PRODUCT_LOADING,
     PRODUCT_LOADED,
     PRODUCT_REMOVED,
-} from '../actions/types';
+} from "../actions/types";
 import {
     getProduct,
     getComment,
     postComment,
     deleteComment,
-} from '../actions/product';
-import CommentList from './Comment/commentList';
-import CommentForm from './Comment/commentForm';
-import {getOrderItems} from '../actions/cart';
+} from "../actions/product";
+import CommentList from "./Comment/commentList";
+import CommentForm from "./Comment/commentForm";
+import { getOrderItems } from "../actions/cart";
 
 class Product extends Component {
     static propTypes = {
@@ -43,7 +43,7 @@ class Product extends Component {
         this.props.getOrderItems();
     }
     componentWillUnmount() {
-        store.dispatch({type: PRODUCT_REMOVED});
+        store.dispatch({ type: PRODUCT_REMOVED });
     }
     async commentSubmitHandler(msg, id, prop) {
         // let id = prop.match.params.id;
@@ -133,8 +133,8 @@ class Product extends Component {
                                                 className="d-block w-100"
                                                 src={`http://127.0.0.1:8000${img}`}
                                                 style={{
-                                                    height: '30rem',
-                                                    width: '10rem',
+                                                    height: "30rem",
+                                                    width: "10rem",
                                                 }}
                                             />
                                         </div>
@@ -144,7 +144,7 @@ class Product extends Component {
                                         <img
                                             className="d-block w-100"
                                             src={`http://127.0.0.1:8000${img}`}
-                                            style={{height: '30rem'}}
+                                            style={{ height: "30rem" }}
                                         />
                                     </div>
                                 );

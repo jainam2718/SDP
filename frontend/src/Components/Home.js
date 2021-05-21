@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {Redirect} from 'react-router-dom';
-import store from '../store';
-import {getAllProductList} from '../actions/productList';
-import 'bootstrap/dist/css/bootstrap.css';
-import ProductCard from './productCard';
-import '../style/home.css';
-import {getCartItems} from '../actions/cart';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import store from "../store";
+import { getAllProductList } from "../actions/productList";
+import "bootstrap/dist/css/bootstrap.css";
+import ProductCard from "./productCard";
+import "../style/home.css";
+import { getCartItems } from "../actions/cart";
+import productList from "../reducers/productList";
 
 export class Home extends Component {
     static propTypes = {
@@ -25,9 +26,16 @@ export class Home extends Component {
     handler() {
         store.dispatch(getAllProductList());
     }
+    onChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+    onSubmit = (e) => {
+        e.preventDefault();
+        this.props.edit_Product(this.state);
+    };
     render() {
         const productList = this.props.productList;
-        const {user} = this.props.auth;
+        const { user } = this.props.auth;
         if (!user) {
             return <Redirect to="/" />;
         }
@@ -37,8 +45,8 @@ export class Home extends Component {
         if (this.props.isProductListLoaded && user != null) {
             return (
                 <div>
-                    <div style={{marginTop: '20px'}}>
-                        <div className="row" style={{marginTop: '20px'}}>
+                    <div style={{ marginTop: "20px" }}>
+                        <div className="row" style={{ marginTop: "20px" }}>
                             {productList
                                 ? productList.map((element) => {
                                       // console.log(element)
@@ -68,7 +76,7 @@ export class Home extends Component {
                                           );
                                       }
                                   })
-                                : 'No products'}
+                                : "No products"}
                         </div>
                     </div>
                 </div>
@@ -88,4 +96,4 @@ const mapStateToProps = (state) => ({
     cartItems: state.cart.cartItems,
     cartUpdated: state.cart.cartUpdated,
 });
-export default connect(mapStateToProps, {getCartItems})(Home);
+export default connect(mapStateToProps, { getCartItems })(Home);
